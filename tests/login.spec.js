@@ -1,7 +1,7 @@
 import {test, expect} from '@playwright/test';
-
 import { LoginPage } from '../pages/loginPage';
 import { HomePage } from '../pages/homePage';
+const { getEmailFromFile } = require('../config');
 
 test.describe('Login Page', () => {
 
@@ -13,7 +13,10 @@ test.describe('Login Page', () => {
     })
 
     test('Verify Login successfully', async ({page}) => {
-        await loginPage.login('test2@test.com', '123456');
+        // Retrieve the registration email from the file
+        const registrationEmail = getEmailFromFile();
+        console.log(registrationEmail)
+        await loginPage.login(registrationEmail, '123456');
         home = new HomePage(page)
         await expect(home.logout).toBeVisible()
     })

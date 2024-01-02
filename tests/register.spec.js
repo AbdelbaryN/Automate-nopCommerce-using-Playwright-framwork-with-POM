@@ -2,6 +2,8 @@ import {test} from '@playwright/test';
 
 import { RegisterPage } from '../pages/registerPage';
 
+const { generateRandomEmail, saveEmailToFile } = require('../config');
+
 test.describe('Register Page', () => {
 
     let registerPage;
@@ -11,8 +13,12 @@ test.describe('Register Page', () => {
     })
 
     test('Verify Registering successfully', async () => {
-        await registerPage.register('Abdo', 'Nasser','29', '4', '2000', 'test2@test.com', '123456', '123456');
+        const registrationEmail = generateRandomEmail();
+        // Save the registration email to a file
+        saveEmailToFile(registrationEmail);
+        await registerPage.register('Abdo', 'Nasser','29', '4', '2000', registrationEmail, '123456', '123456');
         await registerPage.VerifySuccessMsg();
+        console.log(registrationEmail)
     })
 
     test('Verify leaving fields blank', async () => {
